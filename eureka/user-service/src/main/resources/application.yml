@@ -1,0 +1,16 @@
+server:
+  port: 0 #0으로 할당시 어플리케이션 로딩시점에 포트번호가 자동할당됨.
+
+spring:
+  application:
+    name: user-service
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+
+    client:
+    register-with-eureka: true #유레카에 등록을 할거다.= true
+    fetch-registry: true #유레카 서버로부터 인스턴스들의 정보를 주기적으로 가져올것인지를 설정하는 속성. true시 갱신된 정보 받겠다는 표시.
+
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka #유레카라는 엔드포인트에 현재 가지고 있는 마이크로 서비스를 등록하겠다 라는 의미.
