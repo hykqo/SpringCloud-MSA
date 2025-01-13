@@ -18,8 +18,8 @@ public class FirsServiceController {
 
     @GetMapping("/message")
     public String message(@RequestHeader("first-request") String header){
-      log.info(header);
-      return "Welcome to First Service";
+        log.info(header);
+        return "Welcome to First Service";
     }
 
     @GetMapping("/check")
