@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/spring-cloud-gateway/apigateway-service" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/spring-cloud-gateway/apigateway-service" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/spring-cloud-gateway/test" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/spring-cloud-gateway/test" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/user-service" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/user-service" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/zuul/first-service" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/zuul/first-service" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/zuul/second-service" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/zuul/second-service" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/zuul/zull-service" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/zuul/zull-service" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>
