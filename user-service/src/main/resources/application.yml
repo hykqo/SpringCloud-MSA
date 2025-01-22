@@ -5,6 +5,21 @@ spring:
   application:
     name: user-service
 
+  datasource:
+    #url: jdbc:h2:tcp://localhost/~/desktop/study/h2/jpashop
+    url: 'jdbc:h2:mem:testdb'   # H2 DB 연결 주소 (In-Memory Mode)
+    #url: 'jdbc:h2:~/test'    # H2 DB 연결 주소 (Embedded Mode)
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  h2:
+    console:
+      enabled: true #h2 사용
+      settings:
+        web-allow-others: true #h2외부 접속 허용
+      path: /h2-console #경로 설정
+
 eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
@@ -13,6 +28,7 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka
+
 
 
 greeting:
