@@ -32,7 +32,7 @@ public class UserEntity {
         userEntity.email = userDto.getEmail();
         userEntity.name = userDto.getName();
         userEntity.userId = userDto.getUserId();
-        userEntity.encryptedPwd = userDto.getEncryptedPwd();
+        userEntity.encryptedPwd = "temporary" + userDto.getPwd();
         return userEntity;
     }
 
