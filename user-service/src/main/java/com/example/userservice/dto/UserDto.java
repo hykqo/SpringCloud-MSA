@@ -2,13 +2,24 @@ package com.example.userservice.dto;
 
 import lombok.*;
 
-@Builder
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @Getter
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserDto {
     private String email;
     private String name;
     private String pwd;
-    private String userId;
-    private String createdAt;
+
+    private UserDto(String email, String name, String pwd) {
+        this.email = email;
+        this.name = name;
+        this.pwd = pwd;
+    }
+
+    public static UserDto of(String email, String name, String pwd){
+        return new UserDto(email, name, pwd);
+    }
 }

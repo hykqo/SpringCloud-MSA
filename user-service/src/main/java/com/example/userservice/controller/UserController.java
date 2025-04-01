@@ -1,11 +1,15 @@
 package com.example.userservice.controller;
 
 import com.example.userservice.dto.UserDto;
+import com.example.userservice.entity.UserEntity;
 import com.example.userservice.service.UserService;
 import com.example.userservice.vo.RequestUser;
+import com.example.userservice.vo.ResponseUser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/")
@@ -29,15 +33,8 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String createUser(@RequestBody @Valid RequestUser user){
-
-        UserDto userDto = UserDto.builder()
-                .email(user.getEmail())
-                .name(user.getName())
-                .pwd(user.getPwd())
-                .build();
-
-        userService.createUser(userDto);
-        return "Created User";
+    public ResponseEntity createUser(@RequestBody @Valid RequestUser user){
+        UserEntity createdUser = userService.createUser(UserDto.of(user.getEmail(), user.getName(), user.getPwd()));
+        return new ResponseEntity(ResponseUser.of(createdUser), HttpStatus.CREATED);
     }
 }

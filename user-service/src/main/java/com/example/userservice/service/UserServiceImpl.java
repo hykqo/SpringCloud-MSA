@@ -6,8 +6,6 @@ import com.example.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -15,10 +13,9 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDto createUser(UserDto userDto) {
-        userDto.setUserId(UUID.randomUUID().toString());
+    public UserEntity createUser(UserDto userDto) {
         UserEntity user = UserEntity.CREATE(userDto);
         userRepository.save(user);
-        return userDto;
+        return user;
     }
 }

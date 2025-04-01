@@ -7,6 +7,10 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 @Entity
 @Table(name = "users")
 @Getter
@@ -23,18 +27,18 @@ public class UserEntity {
     private String name;
     @Column(nullable = false, unique = true)
     private String userId;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String encryptedPwd;
-
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
 
     public static UserEntity CREATE(UserDto userDto){
         UserEntity userEntity = new UserEntity();
+        userEntity.userId = UUID.randomUUID().toString();
         userEntity.email = userDto.getEmail();
         userEntity.name = userDto.getName();
-        userEntity.userId = userDto.getUserId();
         userEntity.encryptedPwd = "temporary" + userDto.getPwd();
+        userEntity.createdAt = LocalDateTime.now();
         return userEntity;
     }
-
-
 }
