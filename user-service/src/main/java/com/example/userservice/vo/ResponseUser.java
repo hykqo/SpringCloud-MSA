@@ -3,11 +3,16 @@ package com.example.userservice.vo;
 import com.example.userservice.entity.UserEntity;
 import lombok.Builder;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Builder
 public record ResponseUser(
         String email,
         String name,
-        String userId
+        String userId,
+        List<ResponseOrder> orders
 )
 {
     public static ResponseUser of(UserEntity user){
@@ -15,6 +20,14 @@ public record ResponseUser(
                 .email(user.getEmail())
                 .name(user.getName())
                 .userId(user.getUserId())
+                .orders(new ArrayList<>())
                 .build();
     }
+
+    public static List<ResponseUser> from(Iterable<UserEntity> userList){
+        List<ResponseUser> from = new ArrayList<>();
+        userList.forEach(user -> from.add(ResponseUser.of(user)));
+        return from;
+    }
+
 }

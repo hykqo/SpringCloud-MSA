@@ -1,13 +1,12 @@
 package com.example.userservice.entity;
 
 import com.example.userservice.dto.UserDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -30,14 +29,16 @@ public class UserEntity {
     @Column(nullable = false)
     private String encryptedPwd;
     @Column(nullable = false)
+    @JsonIgnore
     private LocalDateTime createdAt;
 
-    public static UserEntity CREATE(UserDto userDto){
+    public static UserEntity CREATE(UserDto userDto, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        String encode = bCryptPasswordEncoder.encode(userDto.getPwd());
         UserEntity userEntity = new UserEntity();
         userEntity.userId = UUID.randomUUID().toString();
         userEntity.email = userDto.getEmail();
         userEntity.name = userDto.getName();
-        userEntity.encryptedPwd = "temporary" + userDto.getPwd();
+        userEntity.encryptedPwd = encode;
         userEntity.createdAt = LocalDateTime.now();
         return userEntity;
     }
