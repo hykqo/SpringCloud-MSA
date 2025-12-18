@@ -26,7 +26,7 @@ public class CustomFilter extends AbstractGatewayFilterFactory<CustomFilter.Conf
             log.info("Custom PRE filter: request id -> {}", request.getId());
 
             //Custom Post Filter
-            return chain.filter(exchange).then(Mono.fromRunnable(() -> {  //Mono.fromRunnable. webflux라고하는 스프링5에서 지원하는 기능. 비동기방식을때는 Mono라고 전달하면된디.
+            return chain.filter(exchange).then(Mono.fromRunnable(() -> {  //Mono.fromRunnable. webflux라고하는 스프링5에서 지원하는 기능. 비동기방식일때는 Mono라고 전달하면된디.
                 log.info("Custom POST filter: response code -> {}", response.getStatusCode());
             }));
         });
