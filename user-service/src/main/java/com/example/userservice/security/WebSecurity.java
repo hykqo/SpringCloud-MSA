@@ -51,9 +51,10 @@ public class WebSecurity {
                                 .requestMatchers("/**").access(
                                         new WebExpressionAuthorizationManager(
                                                 "hasIpAddress('127.0.0.1') or hasIpAddress('::1') or " +
-                                                "hasIpAddress('192.168.20.68') or hasIpAddress('::1')"
+                                                "hasIpAddress('172.30.1.60') or hasIpAddress('::1')"
                                         )
-                                ).anyRequest().authenticated()
+                                )
+                        .anyRequest().authenticated()
                 )
 //                .addFilterBefore(apiKeyAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class) //api-key 전용
                 .authenticationManager(authenticationManager) //인증관련 매니저 지정.
