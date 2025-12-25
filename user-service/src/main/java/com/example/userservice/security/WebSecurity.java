@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.IpAddressMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -37,17 +39,25 @@ public class WebSecurity {
     //SecurityFilterChain 을 빈으로 등록해서 인증/인가 처리.
     @Bean
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
+
+        AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
+
         http.csrf( (csrf) -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/h2-console/**").permitAll()     //h2콘솔
-                        .requestMatchers(HttpMethod.POST,"/users").permitAll() //회원가입
-//                        .anyRequest().authenticated()                   //그 외는 인증 필요
-                        .anyRequest().permitAll()
+                                .requestMatchers("/**").access(
+                                        new WebExpressionAuthorizationManager(
+                                                "hasIpAddress('127.0.0.1') or hasIpAddress('::1') or " +
+                                                "hasIpAddress('192.168.20.68') or hasIpAddress('::1')"
+                                        )
+                                ).anyRequest().authenticated()
                 )
-                /* 빈으로 등록해둔 필터를 사용.
-                 여기서는 UsernamePasswordAuthenticationFilter보다 먼저 실행하도록 한다. 순서에 의미는 없음.
-                */
-                .addFilterBefore(apiKeyAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class) //api-key 전용
+//                .addFilterBefore(apiKeyAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class) //api-key 전용
+                .authenticationManager(authenticationManager) //인증관련 매니저 지정.
+                .addFilter(getAuthenticationFilter(authenticationManager)) //로그인 인증 필터
                 .httpBasic(Customizer.withDefaults()) //Basic 인증 추가
                 .headers((headers) -> headers //스프링 시큐리티에서는 X-Frame-Options를 지정하지 않으면 디폴트가 Deny로 설정되어 있음.
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)) //frame호출을 허용.
@@ -60,8 +70,12 @@ public class WebSecurity {
      *  보통은 UsernamePasswordAuthenticationFilter을 사용하지 못할때 선언하여 사용.(UsernamePasswordAuthenticationFilter을는 form방식에서 동작하는 filter)
      *  OncePerRequestFilter를 이용해서 api 토큰을 검증하고 통과한다면 인증객(Authentication)를 SecurityContext에 넣으면 됨.
      *  */
-    @Bean
+//    @Bean
     public OncePerRequestFilter apiKeyAuthenticationFilter() throws Exception {
         return new ApiKeyAuthenticationFilter(bCryptPasswordEncoder, env);
+    }
+
+    public AuthenticationFilter getAuthenticationFilter(AuthenticationManager authenticationManager) throws Exception {
+        return new AuthenticationFilter(authenticationManager, userService, env);
     }
 }

@@ -4,6 +4,7 @@ import com.example.userservice.dto.UserDto;
 import com.example.userservice.entity.UserEntity;
 import com.example.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,5 +36,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity getUserByUserId(String userId) {
         return userRepository.findByUserId(userId).orElseThrow(() -> new UsernameNotFoundException(userId + " 존재하는 계정이 없습니다."));
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserEntity userEntity = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException(username + ": not found"));
+        return new User(userEntity.getEmail(), userEntity.getEncryptedPwd()
+        ,true,true,true,true,new ArrayList<>());
+    }
+
+    @Override
+    public UserDto getUserDetailsByEmail(String userName) {
+        UserEntity userEntity = userRepository.findByEmail(userName).orElseThrow(() -> new UsernameNotFoundException(userName + ": not found user by userName"));
+        return UserDto.of(userEntity.getUserId(), userEntity.getEmail(), userEntity.getName(), userEntity.getEncryptedPwd());
     }
 }

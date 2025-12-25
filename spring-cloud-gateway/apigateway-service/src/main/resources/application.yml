@@ -28,10 +28,30 @@ spring:
           uri: lb://CATALOG-SERVICE
           predicates:
             - Path=/catalog-service/**
+#        - id: user-service-register
+#          uri: lb://USER-SERVICE
+#          predicates:
+#            - Path=/user-service/users
+#            - Method=POST
+#          filters:
+#            - RemoveRequestHeader=Cookie
+#            - RewritePath=/user-service/(?<segment>.*), /$\{segment} #rewritePath : requestUrl 재지정.  콤마값 잎에 있는것이 사용자 요청주소. 뒤에 있는것이 재지정 주소.
+        - id: user-service-login
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/login
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
             - Path=/user-service/**
+#            - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie
+#            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
         - id: first-service
           #          uri: http://localhost:8081/
           uri: lb://MY-FIRST-SERVICE #로드밸런싱을 위해 유레카에 등록한 서비스명을 기입.

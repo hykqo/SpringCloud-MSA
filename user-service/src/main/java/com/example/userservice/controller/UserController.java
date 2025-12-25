@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+//@RequestMapping("/user-service")
 @RequestMapping("/user-service")
 @RestController
 @RequiredArgsConstructor
@@ -39,7 +41,8 @@ public class UserController {
 
     @PostMapping("/users")
     public ResponseEntity<ResponseUser> createUser(@RequestBody @Valid RequestUser user){
-        UserEntity createdUser = userService.createUser(UserDto.of(user.getEmail(), user.getName(), user.getPwd()));
+        UserDto createUuserDto = UserDto.of(UUID.randomUUID().toString(), user.getEmail(), user.getName(), user.getPwd());
+        UserEntity createdUser = userService.createUser(createUuserDto);
         return new ResponseEntity(ResponseUser.of(createdUser), HttpStatus.CREATED);
     }
 

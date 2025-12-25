@@ -35,7 +35,7 @@ public class UserEntity {
     public static UserEntity CREATE(UserDto userDto, BCryptPasswordEncoder bCryptPasswordEncoder) {
         String encode = bCryptPasswordEncoder.encode(userDto.getPwd());
         UserEntity userEntity = new UserEntity();
-        userEntity.userId = UUID.randomUUID().toString();
+        userEntity.userId = userDto.getUserId();
         userEntity.email = userDto.getEmail();
         userEntity.name = userDto.getName();
         userEntity.encryptedPwd = encode;
