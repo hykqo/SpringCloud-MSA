@@ -1,0 +1,12 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-service
+  cloud:
+    config:
+      server:
+        git: # git? default??.
+          uri: file:///Users/yeom-enong/IdeaProjects/localRepo #window??? file://C:\\Users\\yeom-enong\\IdeaProjects\\localRepo
+          default-label : main #default? master
