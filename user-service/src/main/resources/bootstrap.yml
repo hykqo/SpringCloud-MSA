@@ -1,0 +1,7 @@
+#참조할 spring cloud config를 설정.
+#서비스 기동됨과 동시에 application.yml 보다 bootstrap.yml이 우선권을 가진다.
+spring:
+  cloud:
+    config:
+      uri : http://127.0.0.1:8888
+      name: ecommerce

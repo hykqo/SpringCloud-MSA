@@ -44,20 +44,30 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
-        - id: user-service
+        - id: user-service-register
           uri: lb://USER-SERVICE
           predicates:
             - Path=/user-service/users #회원가입. 회원가입시 jwt검증이 필요하지 않으므로 별도 구분.
             - Method=POST
           filters:
             - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+        - id: user-service-healthCheck
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/health_check #ehalth_check할 경우 토큰 검증 제외.
+            - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
             - Path=/user-service/** #GET 메소드 + User-service접근시에는 Jwt 인증/인가 처리된 대상만 통과.
-            - Method=GET
+            - Method=GET,POST
           filters:
             - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter #jwt 검증.
         - id: first-service
           #          uri: http://localhost:8081/
