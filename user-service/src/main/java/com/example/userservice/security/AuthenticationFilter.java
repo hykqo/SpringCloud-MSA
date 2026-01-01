@@ -6,6 +6,7 @@ import com.example.userservice.vo.RequestLogin;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +20,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.crypto.SecretKey;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,10 +71,13 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         Instant now = Instant.now();
 
+        SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+
         String token = Jwts.builder()
+
                 .setSubject(userDetails.getUserId()) //어떤 대상을 암호화 할건지 선택.
                 .setExpiration(Date.from(now.plusMillis(Long.parseLong(expirationTime)))) //만료기한
-                .signWith(SignatureAlgorithm.HS512, secretKey) //서명키 hmac사용
+                .signWith(SignatureAlgorithm.HS256, key) //서명키 hmac사용
                 .compact();
 
         response.setStatus(HttpServletResponse.SC_OK);
