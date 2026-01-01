@@ -47,11 +47,18 @@ spring:
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
-            - Path=/user-service/**
-#            - Method=GET
+            - Path=/user-service/users #회원가입. 회원가입시 jwt검증이 필요하지 않으므로 별도 구분.
+            - Method=POST
           filters:
             - RemoveRequestHeader=Cookie
-#            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/** #GET 메소드 + User-service접근시에는 Jwt 인증/인가 처리된 대상만 통과.
+            - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie
+            - AuthorizationHeaderFilter #jwt 검증.
         - id: first-service
           #          uri: http://localhost:8081/
           uri: lb://MY-FIRST-SERVICE #로드밸런싱을 위해 유레카에 등록한 서비스명을 기입.
@@ -76,4 +83,5 @@ spring:
                 preLogger: true
                 postLogger: true
 
-
+token:
+  secret : my-very-long-secret-key-1234567890123456
