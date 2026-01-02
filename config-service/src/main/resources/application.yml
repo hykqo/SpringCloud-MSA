@@ -10,3 +10,9 @@ spring:
         git: # git? default??.
           uri: file:///Users/yeom-enong/IdeaProjects/localRepo #window??? file://C:\\Users\\yeom-enong\\IdeaProjects\\localRepo
           default-label : main #default? master
+
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: health, busrefresh, refresh, metrics

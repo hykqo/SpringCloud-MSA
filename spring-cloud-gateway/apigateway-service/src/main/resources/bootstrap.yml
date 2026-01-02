@@ -1,0 +1,14 @@
+# 참조할 spring cloud config를 설정.
+# 서비스 기동됨과 동시에 application.yml 보다 bootstrap.yml이 우선권을 가진다.
+# 이 방식은 spring boot 2점대에서 많이 사용하던 방식임.
+spring:
+  cloud:
+    config:
+      uri : http://127.0.0.1:8888
+      name: ecommerce
+
+# spring cloud 2022버젼 부터는 bootstrap.yml을 더이상 지원하지 않는다. * 먼저 가져오지 않도록 설정이 되어 있다.
+# 여기서는 bootStrap파일을 먼저 가져올 수 있도록 spring-cloud-starter-config 의존성을 따로 추가해줬다.
+
+# 만약 spring-cloud-starter-config 라이브러리를 사용하지 않을 계획이라면
+# bootstrap.yml 대신 application.yml 에서 <config.import> 설정을 추가해서 사용도 가능하다.

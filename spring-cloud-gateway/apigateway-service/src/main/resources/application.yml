@@ -36,7 +36,7 @@ spring:
 #          filters:
 #            - RemoveRequestHeader=Cookie
 #            - RewritePath=/user-service/(?<segment>.*), /$\{segment} #rewritePath : requestUrl 재지정.  콤마값 잎에 있는것이 사용자 요청주소. 뒤에 있는것이 재지정 주소.
-        - id: user-service-login
+        - id: user-service
           uri: lb://USER-SERVICE
           predicates:
             - Path=/user-service/login
@@ -44,7 +44,7 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
-        - id: user-service-register
+        - id: user-service
           uri: lb://USER-SERVICE
           predicates:
             - Path=/user-service/users #회원가입. 회원가입시 jwt검증이 필요하지 않으므로 별도 구분.
@@ -52,11 +52,11 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
-        - id: user-service-healthCheck
+        - id: user-service
           uri: lb://USER-SERVICE
           predicates:
-            - Path=/user-service/health_check #ehalth_check할 경우 토큰 검증 제외.
-            - Method=GET
+            - Path=/user-service/actuator/**
+            - Method=GET,POST
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
@@ -64,7 +64,7 @@ spring:
           uri: lb://USER-SERVICE
           predicates:
             - Path=/user-service/** #GET 메소드 + User-service접근시에는 Jwt 인증/인가 처리된 대상만 통과.
-            - Method=GET,POST
+            - Method=GET
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
@@ -93,5 +93,17 @@ spring:
                 preLogger: true
                 postLogger: true
 
-token:
-  secret : my-very-long-secret-key-1234567890123456
+management:
+  endpoint:
+    web:
+      expoure:
+        include: refresh, health, beans, httptrace, busrefresh, info, metrics, prometheus
+#        include:
+#          - refresh
+#          - health
+#          - beans
+#          - info
+#          - httpexchanges #스프링클라우드 3점대 미만 버젼에서는 httptrace
+
+#token:
+#  secret : my-very-long-secret-key-1234567890123456
