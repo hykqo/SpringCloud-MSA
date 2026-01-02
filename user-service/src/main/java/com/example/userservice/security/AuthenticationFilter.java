@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 @Slf4j
@@ -66,7 +67,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         String userName = ((User)authResult.getPrincipal()).getUsername();
         UserDto userDetails = userService.getUserDetailsByEmail(userName);
 
-        String expirationTime = env.getProperty("token.expiration_time");
+        String expirationTime = env.getProperty("token.expiration-time");
         String secretKey = env.getProperty("token.secret");
 
         Instant now = Instant.now();

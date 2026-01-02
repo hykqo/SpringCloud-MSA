@@ -47,15 +47,15 @@ public class WebSecurity {
 
         http.csrf( (csrf) -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/h2-console/**"
-                                        ,"/health_check"
-                                        ,"/welcome"
-                        ).permitAll()     //h2콘솔
+                        .requestMatchers("/h2-console/**").permitAll()     //h2콘솔
+                        .requestMatchers("/actuator/**").permitAll()
+                        .requestMatchers("/health-check/**").permitAll()
+                        .requestMatchers("/error/**").permitAll()
+                        .requestMatchers("/users/**").permitAll()
                                 .requestMatchers("/**").access(
                                         new WebExpressionAuthorizationManager(
                                                 "hasIpAddress('127.0.0.1') or hasIpAddress('::1') or " +
-                                                "hasIpAddress('192.168.0.179') or hasIpAddress('::1')"
+                                                "hasIpAddress('192.168.0.180') or hasIpAddress('::1')"
                                         )
                                 )
                         .anyRequest().authenticated()
