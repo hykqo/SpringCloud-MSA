@@ -5,7 +5,7 @@ spring:
   cloud:
     config:
       uri : http://127.0.0.1:8888
-      name: ecommerce
+      name: config-service #서비스명을 config server애플리케이션명으로 지정할 경우 config server에 있는 application.yml을 불러온다 ex)config-service의 서비스명인 config-service로 지정을 하면 config server에 있는 파일중 application.yml이라는 파일명의 설정파일을 불러옴.
 
 # spring cloud 2022버젼 부터는 bootstrap.yml을 더이상 지원하지 않는다. * 먼저 가져오지 않도록 설정이 되어 있다.
 # 여기서는 bootStrap파일을 먼저 가져올 수 있도록 spring-cloud-starter-config 의존성을 따로 추가해줬다.
