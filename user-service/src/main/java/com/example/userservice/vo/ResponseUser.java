@@ -1,5 +1,6 @@
 package com.example.userservice.vo;
 
+import com.example.userservice.dto.UserDto;
 import com.example.userservice.entity.UserEntity;
 import lombok.Builder;
 
@@ -30,4 +31,13 @@ public record ResponseUser(
         return from;
     }
 
+
+    public static ResponseUser of(UserDto user){
+        return ResponseUser.builder()
+                .email(user.getEmail())
+                .name(user.getName())
+                .userId(user.getUserId())
+                .orders(new ArrayList<>())
+                .build();
+    }
 }
