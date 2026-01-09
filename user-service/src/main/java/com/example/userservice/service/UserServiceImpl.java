@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = userRepository.findByUserId(userId).orElseThrow(() -> new UsernameNotFoundException(userId + " 존재하는 계정이 없습니다."));
         UserDto userDto = UserDto.of(userEntity.getUserId(), userEntity.getEmail(), userEntity.getName(), userEntity.getEncryptedPwd());
 
-        String usersOrderUrl = String.format(env.getProperty("users.order.url"), userId);
+        String usersOrderUrl = String.format(env.getProperty("order-service.url"), userId);
         ResponseEntity<List<ResponseOrder>> responseEntity = restTemplate.exchange(usersOrderUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<ResponseOrder>>() {
         });
         List<ResponseOrder> orderList = responseEntity.getBody();

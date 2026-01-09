@@ -28,6 +28,7 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<GlobalFilter.Conf
 
             if(config.isPreLogger()) {
                 log.info("Global Filter requerst id -> {}", request.getId());
+                log.info("Global Filter requerst URI -> {}", request.getURI());
             }
             //Custom Post Filter
             return chain.filter(exchange).then(Mono.fromRunnable(() -> {

@@ -1,5 +1,5 @@
 server:
-  port: 60000
+  port: 0
 
 greeting:
   message: Welcome to the Simple E-Commerce. (dev profile)

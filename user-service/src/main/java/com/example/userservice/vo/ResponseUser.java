@@ -37,7 +37,7 @@ public record ResponseUser(
                 .email(user.getEmail())
                 .name(user.getName())
                 .userId(user.getUserId())
-                .orders(new ArrayList<>())
+                .orders(user.getOrders())
                 .build();
     }
 }
