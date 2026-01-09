@@ -1,5 +1,6 @@
 package com.example.userservice.service;
 
+import com.example.userservice.client.OrderServiceClient;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.entity.UserEntity;
 import com.example.userservice.repository.UserRepository;
@@ -26,8 +27,9 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final RestTemplate restTemplate;
+//    private final RestTemplate restTemplate;
     private final Environment env;
+    private final OrderServiceClient orderServiceClient;
 
     @Override
     public UserEntity createUser(UserDto userDto) {
@@ -51,15 +53,17 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = userRepository.findByUserId(userId).orElseThrow(() -> new UsernameNotFoundException(userId + " 존재하는 계정이 없습니다."));
         UserDto userDto = UserDto.of(userEntity.getUserId(), userEntity.getEmail(), userEntity.getName(), userEntity.getEncryptedPwd());
 
-        String usersOrderUrl = String.format(env.getProperty("order-service.url"), userId);
-        ResponseEntity<List<ResponseOrder>> responseEntity = restTemplate.exchange(usersOrderUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<ResponseOrder>>() {
-        });
-        List<ResponseOrder> orderList = responseEntity.getBody();
+        /* Using a restTemplate */
+//        String usersOrderUrl = String.format(env.getProperty("order-service.url"), userId);
+//        ResponseEntity<List<ResponseOrder>> responseEntity = restTemplate.exchange(usersOrderUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<ResponseOrder>>() {
+//        });
+//        List<ResponseOrder> orderList = responseEntity.getBody();
+
+        /*.Using a FeignClient */
+        List<ResponseOrder> orderList = orderServiceClient.getOrdersByUserId(userId);
+
         userDto.setOrders(orderList);
-
         return userDto;
-
-
     }
 
     @Override
