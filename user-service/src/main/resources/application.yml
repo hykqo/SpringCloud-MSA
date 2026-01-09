@@ -70,3 +70,7 @@ management:
     web:
       exposure:
         include: refresh, health, beans, busrefresh, info, metrics, prometheus, httptrace
+
+logging:
+  level:
+    com.example.userservice.client : DEBUG
