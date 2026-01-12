@@ -6,6 +6,7 @@ import com.example.userservice.entity.UserEntity;
 import com.example.userservice.repository.UserRepository;
 import com.example.userservice.vo.ResponseOrder;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
@@ -21,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -58,10 +60,13 @@ public class UserServiceImpl implements UserService {
 //        ResponseEntity<List<ResponseOrder>> responseEntity = restTemplate.exchange(usersOrderUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<ResponseOrder>>() {
 //        });
 //        List<ResponseOrder> orderList = responseEntity.getBody();
-
+        List<ResponseOrder> orderList = null;
         /*.Using a FeignClient */
-        List<ResponseOrder> orderList = orderServiceClient.getOrdersByUserId(userId);
-
+        try {
+            orderList = orderServiceClient.getOrdersByUserId(userId);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
         userDto.setOrders(orderList);
         return userDto;
     }
