@@ -12,7 +12,10 @@ import java.util.List;
 @FeignClient(value = "order-service", configuration = FeignErrorDecoder.class)
 public interface OrderServiceClient {
 
-    @GetMapping("/order-service/{userId}/orders_ng")
+    @GetMapping("/order-service/{userId}/orders")
     List<ResponseOrder> getOrdersByUserId(@PathVariable String userId);
+
+//    @GetMapping("/order-service/{userId}/orders_ng")
+//    List<ResponseOrder> getOrdersByUserId(@PathVariable String userId);
 
 }
