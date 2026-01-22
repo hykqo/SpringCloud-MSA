@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.io.Serializable;
@@ -21,10 +22,14 @@ public class CatalogEntity implements Serializable {
 
     @Column(nullable = false, length = 120, unique = true)
     private String productId;
+
     @Column(nullable = false)
     private String productName;
+
     @Column(nullable = false)
+    @Setter
     private Integer stock;
+
     @Column(nullable = false)
     private Integer unitPrice;
 
