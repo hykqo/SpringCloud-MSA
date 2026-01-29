@@ -3,6 +3,7 @@ package com.orderservice.controller;
 import com.orderservice.dto.OrderDto;
 import com.orderservice.entity.OrderEntity;
 import com.orderservice.messagequeue.KafkaProducer;
+import com.orderservice.messagequeue.OrderProducer;
 import com.orderservice.service.OrderService;
 import com.orderservice.vo.RequestOrder;
 import com.orderservice.vo.ResponseOrder;
@@ -23,6 +24,7 @@ public class OrderController {
 
     private final OrderService orderService;
     private final KafkaProducer kafkaProducer;
+    private final OrderProducer orderProducer;
     private final Environment env;
 
     @GetMapping("/health_check")
@@ -37,10 +39,15 @@ public class OrderController {
         log.info("Before add orders data");
         OrderDto orderDto = OrderDto.of(requestOrder, userId);
 
+        /* db insert기능 제거 */
         OrderDto order = orderService.createOrder(orderDto);
 
         /* Send an order to the kafka */
         kafkaProducer.send("example-catalog-topic", order);
+        /* Send and order to the kafka DB */
+        orderProducer.send("orders", order);
+
+
 
         log.info("After added orders data");
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
