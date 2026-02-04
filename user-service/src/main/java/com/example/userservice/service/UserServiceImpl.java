@@ -7,6 +7,8 @@ import com.example.userservice.repository.UserRepository;
 import com.example.userservice.vo.ResponseOrder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
@@ -32,6 +34,8 @@ public class UserServiceImpl implements UserService {
 //    private final RestTemplate restTemplate;
     private final Environment env;
     private final OrderServiceClient orderServiceClient;
+
+    private final CircuitBreakerFactory circuitBreakerFactory;
 
     @Override
     public UserEntity createUser(UserDto userDto) {
@@ -60,13 +64,15 @@ public class UserServiceImpl implements UserService {
 //        ResponseEntity<List<ResponseOrder>> responseEntity = restTemplate.exchange(usersOrderUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<ResponseOrder>>() {
 //        });
 //        List<ResponseOrder> orderList = responseEntity.getBody();
-        List<ResponseOrder> orderList = null;
+
         /*.Using a FeignClient */
-        try {
-            orderList = orderServiceClient.getOrdersByUserId(userId);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
+//        List<ResponseOrder> orderList = orderServiceClient.getOrdersByUserId(userId);
+
+        /* Using a CircuitBreaker */
+        CircuitBreaker circuitbreaker = this.circuitBreakerFactory.create("circuitbreaker");
+        List<ResponseOrder> orderList = circuitbreaker.run(()-> orderServiceClient.getOrdersByUserId(userId),
+                throwable -> new ArrayList<>());
+
         userDto.setOrders(orderList);
         return userDto;
     }

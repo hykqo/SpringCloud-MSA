@@ -16,7 +16,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto createOrder(OrderDto orderDetail) {
         orderDetail.setTotalPrice(orderDetail.getQty() * orderDetail.getUnitPrice());
         OrderEntity orderEntity = OrderEntity.CREATE_ORDER(orderDetail);
-//        orderRepository.save(orderEntity);
+        orderRepository.save(orderEntity);
         orderDetail.setOrderId(orderEntity.getOrderId());
         return orderDetail;
     }
