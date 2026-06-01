@@ -56,6 +56,7 @@ public class OrderController {
         log.info("Before retrieve orders data");
         Iterable<OrderEntity> ordersByUserId = orderService.getOrdersByUserId(userId);
         List<ResponseOrder> from = ResponseOrder.from(ordersByUserId);
+        log.info("after retrieve orders data");
         return ResponseEntity.ok().body(from);
     }
 

@@ -20,6 +20,7 @@ spring:
     password : guest
 
 
+
 #  datasource:
     #url: jdbc:h2:tcp://localhost/~/desktop/study/h2/jpashop
 #    url: 'jdbc:h2:mem:testdb'   # H2 DB 연결 주소 (In-Memory Mode)
@@ -66,6 +67,12 @@ greeting:
 #  secret : my-very-long-secret-key-1234567890123456
 
 management:
+  tracing:
+    sampling:
+      probability: 1.0  # 모든 요청에 대해 추적 (프로덕션에서는 낮은 값 사용 권장, 예: 0.1)
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans  # Zipkin 서버 주소
   endpoints:
     web:
       exposure:
@@ -74,3 +81,6 @@ management:
 logging:
   level:
     com.example.userservice.client : DEBUG
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"  # 로그에 트레이스 ID와 스팬 ID 포함
+

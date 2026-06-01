@@ -34,6 +34,14 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 	implementation 'org.mariadb.jdbc:mariadb-java-client'
 
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	// Micrometer Observation 코어
+	implementation 'io.micrometer:micrometer-observation'
+	// Brave를 사용한 Micrometer Tracing 브릿지
+	implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+	// Zipkin Reporter
+	implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
+
 	implementation 'org.springframework.kafka:spring-kafka'
 
 	compileOnly 'org.projectlombok:lombok'

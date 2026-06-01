@@ -36,7 +36,18 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
     implementation 'io.jsonwebtoken:jjwt:0.12.3'
-    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'    // Spring Boot Actuator
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // Micrometer Observation 코어
+    implementation 'io.micrometer:micrometer-observation'
+
+    // Brave를 사용한 Micrometer Tracing 브릿지
+    implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+
+    // Zipkin Reporter
+    implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
+
 
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 
@@ -44,6 +55,14 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
+
+    // Micrometer Observation 코어
+    implementation 'io.micrometer:micrometer-observation'
+    // Brave를 사용한 Micrometer Tracing 브릿지
+    implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+    // Zipkin Reporter
+    implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
+
 
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
