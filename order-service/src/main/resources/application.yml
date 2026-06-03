@@ -6,12 +6,13 @@ spring:
   application:
     name: order-service
 
-  zipkin:
-    base-url: http://localhost:9411
-    enabled: true
-  sleuth:
-    sampler:
-      probability:1.0
+  #spring boot 2.x 에서 사용하는 zipkin설정
+#  zipkin:
+#    base-url: http://localhost:9411
+#    enabled: true
+#  sleuth:
+#    sampler:
+#      probability:1.0
 
   h2:
     console:

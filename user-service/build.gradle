@@ -62,6 +62,8 @@ dependencies {
     implementation 'io.micrometer:micrometer-tracing-bridge-brave'
     // Zipkin Reporter
     implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
+    // traceId를 전파하기 위해 사용
+    implementation 'io.github.openfeign:feign-micrometer'
 
 
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'

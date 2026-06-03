@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -52,10 +53,19 @@ public class OrderController {
     }
 
     @GetMapping("/{userId}/orders")
-    public ResponseEntity<List<ResponseOrder>> getOrder(@PathVariable String userId) {
+    public ResponseEntity<List<ResponseOrder>> getOrder(@PathVariable String userId, @RequestHeader Map<String, String> headers) throws Exception {
+        headers.forEach((k, v) -> log.info("HEADER {}={}", k, v));
         log.info("Before retrieve orders data");
         Iterable<OrderEntity> ordersByUserId = orderService.getOrdersByUserId(userId);
         List<ResponseOrder> from = ResponseOrder.from(ordersByUserId);
+
+        try {
+            Thread.sleep(1000);
+            throw new Exception("장애 발생");
+        } catch (InterruptedException e) {
+            log.warn(e.getMessage());
+        }
+
         log.info("after retrieve orders data");
         return ResponseEntity.ok().body(from);
     }
