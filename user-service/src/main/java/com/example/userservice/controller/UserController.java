@@ -5,6 +5,7 @@ import com.example.userservice.entity.UserEntity;
 import com.example.userservice.service.UserService;
 import com.example.userservice.vo.RequestUser;
 import com.example.userservice.vo.ResponseUser;
+import io.micrometer.core.annotation.Timed;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +31,7 @@ public class UserController {
     private String message;
 
     @GetMapping("/health_check")
+    @Timed(value = "user.status", longTask = true)
     public String status() {
         return String.format("It's Working in User Service"
                 + ", port(local.server.port)=" + env.getProperty("local.server.port")
@@ -41,6 +43,7 @@ public class UserController {
     }
 
     @GetMapping("/welcome")
+    @Timed(value = "user.welcome", longTask = true)
     public String welcome() {
         return message;
     }
