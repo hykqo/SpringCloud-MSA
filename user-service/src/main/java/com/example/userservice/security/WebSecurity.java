@@ -49,7 +49,8 @@ public class WebSecurity {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/h2-console/**").permitAll()     //h2콘솔
                         .requestMatchers("/actuator/**").permitAll()
-                        .requestMatchers("/health-check/**").permitAll()
+                        .requestMatchers("/health_check/**").permitAll()
+                        .requestMatchers("/welcome/**").permitAll()
                         .requestMatchers("/error/**").permitAll()
                         .requestMatchers("/users/**").permitAll()
                                 .requestMatchers("/**").access(

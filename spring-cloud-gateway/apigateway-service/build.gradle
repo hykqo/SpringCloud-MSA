@@ -44,7 +44,19 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
 
+
+    // Micrometer Observation 코어
+    implementation 'io.micrometer:micrometer-observation'
+    // Brave를 사용한 Micrometer Tracing 브릿지
+    implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+    // Zipkin Reporter
+    implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
+    // traceId를 전파하기 위해 사용
+    implementation 'io.github.openfeign:feign-micrometer'
+    //micrometer
     implementation 'io.micrometer:micrometer-registry-prometheus'
+    //aop
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
 }
 
 dependencyManagement {
